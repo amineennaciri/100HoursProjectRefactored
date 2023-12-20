@@ -9,6 +9,14 @@ const logInMiddleware = passport.authenticate('local', {
 });
 
 module.exports = {
+    getSignUp: (req,res)=>{
+        /* res.render('signup.ejs'); */
+        return res.status(234).send('Welcome to the Sign Up Page!');
+    },
+    getLogIn: (req,res)=>{
+        /* res.render('login.ejs'); */
+        return res.status(234).send('Welcome to the Login Page!');
+    },
     postSignUp: async (req, res, next)=>{
         const validationErrors = []
         if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })

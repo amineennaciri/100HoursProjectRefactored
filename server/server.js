@@ -5,6 +5,7 @@ const cors = require('cors');
 const passport = require('passport');
 const session = require("express-session");
 const mainRoutes = require('./routes/main');
+const dashboardRoutes = require('./routes/dashboard');
 
 const app = express();
 
@@ -30,14 +31,7 @@ app.use(cors());
 })); */
 
 app.use("/", mainRoutes);
-app.get('/dashboard',(request,response)=>{
-    /* console.log(request); */
-    return response.status(234).send('Welcome to MERN Stack Tutorial');
-})
-app.get('/login',(request,response)=>{
-    /* console.log(request); */
-    return response.status(234).send('Not welcomed to MERN Stack Tutorial');
-})
+app.use("/dashboard", dashboardRoutes);
 
 
 connectDB().then(()=>{
