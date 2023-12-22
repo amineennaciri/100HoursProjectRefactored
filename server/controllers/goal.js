@@ -1,13 +1,14 @@
-const Todo = require('./../models/todo');
+const Goal = require('./../models/goal');
+
 module.exports = {
-    getTodo: async (req,res)=>{
-        /* res.render('todo.ejs',{ user: req.user}); */
+    getGoal: async (req,res)=>{
+        /* res.render('goal.ejs',{ user: req.user}); */
         try {
             if(req.user){
-            const todos = await Todo.find({ author: req.user.id });
+            const goals = await Goal.find({ author: req.user.id });
             return res.status(200).json({
-                count: todos.length,
-                data: todos
+                count: goals.length,
+                data: goals
             });
             }else{
                 return res.status(401).send('Unauthorized access, you need to be logged in');
@@ -17,22 +18,22 @@ module.exports = {
             res.status(500).send({ message: error.message })
         }
     },
-    postTodo: async (req, res)=>{
+    postGoal: async (req, res, next)=>{
         try {
             if(
-                !req.body.todo ||
-                !req.body.urgency
+                !req.body.goal ||
+                !req.body.schedule
             ){
                 return res.status(500).send({
-                    message: "Send all required fields: todo, urgency"
+                    message: "Send all required fields: goal, schedule"
                 })
             }
-            const todo = new Todo({
-                todo: req.body.todo,
-                urgency: req.body.urgency,
+            const goal = new Goal({
+                goal: req.body.goal,
+                schedule: req.body.schedule,
                 author: req.user._id,
               });
-              const result = await todo.save();
+              const result = await goal.save();
               /* res.redirect("/dashboard");  */
               return res.status(201).send(result);   
         } catch (error) {
@@ -40,39 +41,39 @@ module.exports = {
             res.status(500).send({message: error.message});
         }
     },
-    deleteTodo: async (req, res)=>{
+    deleteGoal: async (req, res, next)=>{
         try{
-            const { todoId } = req.params;
-            const result = await Todo.findByIdAndDelete(todoId, req.body);
+            const { goalId } = req.params;
+            const result = await Goal.findByIdAndDelete(goalId, req.body);
             if (!result){
                 return res.status(404).json({
-                    message: 'Todo not found'
+                    message: 'Goal not found'
                 });
             }
-            return res.status(200).send({message:'Todo Deleted Successfully'});
+            return res.status(200).send({message:'Goal Deleted Successfully'});
         }catch(error){
             console.log(error.message);
             res.status(500).send({ message: error.message })
         }
     },
-    updateTodo: async (req, res)=>{
+    updateGoal: async (req, res, next)=>{
         try{
             if(
-                !req.body.todo ||
-                !req.body.urgency
+                !req.body.goal ||
+                !req.body.schedule
             ){
                 return res.status(400).send({
-                    message: "Send all required fields: todo, urgency"
+                    message: "Send all required fields: goal, schedule"
                 })
             }
-            const { todoId } = req.params;
-            const result = await Todo.findByIdAndUpdate(todoId, req.body);
+            const { goalId } = req.params;
+            const result = await Goal.findByIdAndUpdate(goalId, req.body);
             if (!result){
                 return res.status(404).json({
-                    message: 'Todo not found'
+                    message: 'Goal not found'
                 });
             }
-            return res.status(200).send({message:'Todo Updated Successfully'});
+            return res.status(200).send({message:'Goal Updated Successfully'});
         }catch(error){
             console.log(error.message);
             res.status(500).send({ message: error.message })
