@@ -32,8 +32,8 @@ module.exports = {
             const existingUser = await User.findOne({
               $or: [
                 { email: req.body.email },
-                { firstName: req.body.firstN },
-                { lastName: req.body.lastN }
+                { firstName: req.body.firstName },
+                { lastName: req.body.lastName }
               ]
             });
             if (existingUser) {

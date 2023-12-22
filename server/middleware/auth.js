@@ -13,7 +13,8 @@ module.exports = {
           return next()
         }  
       } catch (error) {
-        console.log(err);
+        console.log(error.message);
+        res.status(401).send({ message: error.message })
         res.redirect('/')
       }
     }

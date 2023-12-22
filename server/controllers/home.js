@@ -9,7 +9,12 @@ module.exports = {
             /* const usersTodo = await Todo.find({author:req.user.id});
             const usersGoal = await Goal.find({author:req.user.id});
             res.render('dashboard.ejs',{user: req.user, todos: usersTodo, goals: usersGoal}); */
-            return res.status(234).send('Welcome to the dashboard page, you succesfully logged in');
+            if(req.user){
+                console.log(req.user);
+                return res.status(234).send('Welcome to the dashboard page, you succesfully logged in');
+            }else{
+                return res.status(401).send('Unauthorized access, you need to be logged in');
+            }
         } catch (err) {
             console.log(err);
         }
