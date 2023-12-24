@@ -31,9 +31,9 @@ module.exports = {
           try {
             const existingUser = await User.findOne({
               $or: [
-                { email: req.body.email },
+                { email: req.body.email }/* ,
                 { firstName: req.body.firstName },
-                { lastName: req.body.lastName }
+                { lastName: req.body.lastName } */
               ]
             });
             if (existingUser) {
@@ -41,8 +41,8 @@ module.exports = {
               //return res.redirect('../signup');
             }
             const user = new User({
-              firstName: req.body.firstN,
-              lastName: req.body.lastN,
+              firstName: req.body.firstName,
+              lastName: req.body.lastName,
               email:req.body.email,
               password: hashedPassword,
             });
