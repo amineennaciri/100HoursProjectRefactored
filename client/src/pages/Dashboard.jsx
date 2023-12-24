@@ -33,7 +33,7 @@ export default function Dashboard() {
     console.log(exams);
     useEffect(()=>{
       setLoading(true);
-      axios.get('http://localhost:8000/dashboard')
+      axios.get('http://localhost:8000/dashboard', { withCredentials: true })
       .then((response)=>{
         setExams(response);
           setLoading(false);

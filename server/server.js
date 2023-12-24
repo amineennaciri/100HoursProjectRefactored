@@ -12,7 +12,7 @@ const app = express();
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
 // express session middleware
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 require('./config/passport')(passport);
 // passport initialization & session
 app.use(passport.initialize());
@@ -24,6 +24,10 @@ app.use(express.json());
 // Option 1: Allow all Origins with Default of cors(*);
 app.use(cors());
 // Option 2: Allow custom Origins;
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  }));
 /* app.use(cors({
     origins:'http:localhost:3000',
     methods:['GET','POST','PUT','DELETE'],
