@@ -3,10 +3,31 @@ const bcrypt = require('bcryptjs');
 const User = require('./../models/user');
 const validator = require('validator');
 
-const logInMiddleware = passport.authenticate('local', {
+/* const logInMiddleware = passport.authenticate('local', {
     successRedirect: '/dashboard',
     failureRedirect: '/login',
-});
+}); */
+const logInMiddleware = (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!user) {
+      // Authentication failed
+      return res.status(401).json({ message: 'Authentication failed' });
+    }
+
+    // Authentication succeeded
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+
+      return res.status(200).json({ message: 'Login successful', user });
+    });
+  })(req, res, next);
+};
 
 module.exports = {
     getSignUp: (req,res)=>{
