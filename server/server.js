@@ -22,7 +22,7 @@ app.use(express.json());
 
 // Middleware for handling CORS policy
 // Option 1: Allow all Origins with Default of cors(*);
-app.use(cors());
+/* app.use(cors()); */
 // Option 2: Allow custom Origins;
 app.use(cors({
     origin: 'http://localhost:5173',

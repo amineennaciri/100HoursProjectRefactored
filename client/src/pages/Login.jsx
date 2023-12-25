@@ -1,35 +1,51 @@
 import {Link} from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import {AuthContext} from '../components/AuthProvider';
+
 export default function Login() {
+  const {setAuth} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [signUser, setSignUser] = useState(false);
+  const [signUser, setSignUser] = useState(false);  
+  const [userData, setUserData] = useState('');  
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   useEffect(()=>{
-    const handleSignUser = () => {
+    const handleSignUser = async () => {
       const data = {
         email,
         password
       };
       setLoading(true);
-      axios.post('http://localhost:8000/postlogin', data)
+      try {
+        const response = await axios.post('http://localhost:8000/postlogin', data);
+        const userData = response.data.user;
+        setUserData(userData);
+        setLoading(false);
+        enqueueSnackbar('User signed successfully', { variant : 'success'});
+        navigate('/dashboard');
+      } catch (error) {
+          setLoading(false);
+          enqueueSnackbar('Error', { variant : 'error'})
+          console.log(error);
+      }
+      /* axios.post('http://localhost:8000/postlogin', data)
       .then(()=>{
           setLoading(false);
-          enqueueSnackbar('User signed successfully', { variant : 'success'})
+          enqueueSnackbar('User signed successfully', { variant : 'success'});
           navigate('/dashboard');
       })
       .catch((error)=>{
           setLoading(false);
           enqueueSnackbar('Error', { variant : 'error'})
           console.log(error);
-      })
+      }) */
   };
   if(signUser){
     handleSignUser();

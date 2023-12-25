@@ -31,9 +31,9 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(false);
     const [showType, setShowType] = useState('table');
     console.log(exams);
-    useEffect(()=>{
+/*     useEffect(()=>{
       setLoading(true);
-      axios.get('http://localhost:8000/dashboard', { withCredentials: true })
+      axios.get('http://localhost:8000/dashboard',)
       .then((response)=>{
         setExams(response);
           setLoading(false);
@@ -42,7 +42,7 @@ export default function Dashboard() {
           console.log(error);
           setLoading(false);
       })
-  },[])
+  },[]) */
   return (
     <>
       <div className="min-h-full">
